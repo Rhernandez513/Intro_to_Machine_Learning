@@ -10,8 +10,20 @@ def prime_nums_reversed(n):
     '''
 
     # PUT YOUR CODE HERE
-    pass    # remove the 'pass'
+    def sieve_of_eratosthenes(n):
+        primes = [True for i in range(n+1)]
+        primes[0] = False
+        primes[1] = False
+        p = 2
+        while p * p < n:
+            if primes[p] == True:
+                for i in range(p ** 2, n + 1, p):
+                    primes[i] = False
+            p += 1
+        return [i for i in range(len(primes)) if primes[i]]
 
+    primes = sieve_of_eratosthenes(n)
+    return primes[::-1]
 
 
 # Question 1(b)
