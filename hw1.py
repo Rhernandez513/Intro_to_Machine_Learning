@@ -110,8 +110,10 @@ def amount_spent(v, B):
     """
 
     A = np.array([
-        [0, 3, 2, 0]
-    ])  # Finish this!
+        [0, 3, 2, 0],
+        [2, 2, 2, 2],
+        [0, 0, 0, 10]
+    ])
 
     return A @ B @ v
 
