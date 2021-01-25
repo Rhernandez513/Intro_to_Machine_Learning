@@ -59,7 +59,7 @@ def replace(a, b):
     """
 
     # PUT YOUR CODE HERE
-    pass  # remove the 'pass'
+    return a[:len(a)-1] + b
 
 
 # Question 2(a)
