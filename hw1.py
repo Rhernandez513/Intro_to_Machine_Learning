@@ -17,14 +17,14 @@ def prime_nums_reversed(n):
         primes[1] = False
         p = 2
         while p * p < n:
-            if primes[p] == True:
+            if primes[p]:
                 for i in range(p ** 2, n + 1, p):
                     primes[i] = False
             p += 1
         return [i for i in range(len(primes)) if primes[i]]
 
-    primes = sieve_of_eratosthenes(n)
-    return primes[::-1]
+    reverse_primes = sieve_of_eratosthenes(n)
+    return reverse_primes[::-1]
 
 
 # Question 1(b)
@@ -42,7 +42,9 @@ def string_explosion(string):
     """
 
     # PUT YOUR CODE HERE
-    pass  # remove the 'pass'
+    if string == "":
+        return ""
+    return string + string_explosion(string[1:])
 
 
 # Question 1(c)
