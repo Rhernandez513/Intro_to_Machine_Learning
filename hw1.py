@@ -82,7 +82,10 @@ def bowl_cost(v):
     """
 
     B = np.array([
-        # You should fill this in.
+        [4, 4, 4],
+        [1, 0, 3],
+        [0, 4, 2],
+        [0, 0, 12]
     ])
 
     # The notation B @ v means: compute the matrix multiplication Bv
