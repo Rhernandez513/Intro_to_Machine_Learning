@@ -12,6 +12,8 @@ def prime_nums_reversed(n):
 
     # PUT YOUR CODE HERE
     def sieve_of_eratosthenes(n):
+        if n <= 1:
+            return ''
         primes = [True for i in range(n + 1)]
         primes[0] = False
         primes[1] = False
@@ -130,5 +132,5 @@ def new_price(A, B, x):
         Use np.linalg.inv and x to compute the new prices for the individual fruits:
     """
 
-    new_v = None  # Fill your code here
+    new_v = x @ np.linalg.inv(A @ B)
     return new_v
