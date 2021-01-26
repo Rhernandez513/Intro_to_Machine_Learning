@@ -132,5 +132,5 @@ def new_price(A, B, x):
         Use np.linalg.inv and x to compute the new prices for the individual fruits:
     """
 
-    new_v = x @ np.linalg.inv(A @ B)
+    new_v = np.linalg.inv(A @ B) @ np.transpose(x)
     return new_v
