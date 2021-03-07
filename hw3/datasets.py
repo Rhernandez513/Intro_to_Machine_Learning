@@ -1,4 +1,6 @@
 from numpy import *
+from numpy import array, zeros
+
 from util import *
 import csv
 import sys

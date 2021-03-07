@@ -1,6 +1,7 @@
 from binary import *
 from util import *
 from numpy import *
+import numpy as np
 
 class OVA:
     def __init__(self, K, mkClassifier):
@@ -23,7 +24,7 @@ class OVA:
                 vote[k] += 1 if probs[0,1] > 0.5 else 0
             else:
                 vote[k] += probs[0,1]   # weighted vote
-        return argmax(vote)
+        return np.argmax(vote)
 
     def predictAll(self, X, useZeroOne=False):    
         N,D = X.shape
@@ -60,7 +61,7 @@ class AVA:
                 p = None # TODO
                 vote[i] += p
                 vote[j] -= p
-        return argmax(vote)
+        return np.argmax(vote)
 
     def predictAll(self, X, useZeroOne=False):
         N,D = X.shape

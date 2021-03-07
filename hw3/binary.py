@@ -3,7 +3,7 @@ This defines an abstract class for binary classification.  It supports
 both online algorithms (like perceptron) and batch algorithm (like
 gradient descent).
 """
-
+from numpy import zeros
 
 import util
 from numpy import *

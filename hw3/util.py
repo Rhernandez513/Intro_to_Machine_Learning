@@ -3,6 +3,9 @@ import inspect
 import random
 import pylab
 from numpy import *
+from numpy import zeros
+import numpy as np
+
 
 def raiseNotDefined():
   print("Method not implemented: "+inspect.stack()[1][3])    
@@ -148,7 +151,7 @@ class Counter(dict):
         ['second', 'third', 'first']
         """
         sortedItems = self.items()
-        compare = lambda x, y:  sign(y[1] - x[1])
+        compare = lambda x, y:  np.sign(y[1] - x[1])
         sortedItems.sort(cmp=compare)
         return [x[0] for x in sortedItems]
 
@@ -294,7 +297,7 @@ def showTree(dt, dictionary):
             sys.stdout.write(s)
             sys.stdout.write('-> ')
         if thresh[node] == -2: # leaf
-            print("class {0}\t({1} for class -1, {2} for class +1)".format('+1' if argmax(value[node]) else '-1', value[node][0,0], value[node][0,1]))
+            print("class {0}\t({1} for class -1, {2} for class +1)".format('+1' if np.argmax(value[node]) else '-1', value[node][0,0], value[node][0,1]))
         else: # internal node
             print(feats[node]+"?")
             # print '%s?' % feats[node]

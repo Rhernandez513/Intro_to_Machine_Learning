@@ -1,11 +1,13 @@
 """
 This module is for training, testing an evaluating classifiers.
 """
-
-
+from math import ceil, log2
+from statistics import mean
+from numpy import zeros
 from numpy import *
 from pylab import *
 
+import numpy as np
 import sys
 import util
 import binary
@@ -58,7 +60,7 @@ def learningCurve(classifier, X, Y, Xtest, Ytest):
     
     for i in range(1, M+1):    # loop over "skip lengths"
         # select every 2^(M-i)th point
-        ids = arange(0, N, 2**(M-i))
+        ids = np.arange(0, N, 2**(M-i))
         Xtr = X[ids, :]
         Ytr = Y[ids]
 
@@ -157,7 +159,7 @@ def plotClassifier(w, b):
     if xlim[0] <= ymax_zero and ymax_zero <= xlim[1]:
         inBounds.append( (ymax_zero, ymax) )
 
-    plot( array([inBounds[0][0], inBounds[1][0]]), array([inBounds[0][1], inBounds[1][1]]), 'g-', linewidth=2 )
+    plot(np.array([inBounds[0][0], inBounds[1][0]]), np.array([inBounds[0][1], inBounds[1][1]]), 'g-', linewidth=2 )
     figure(1).set_axes([axes])
     
 def dumpMegamFormat(fname, Xtr, Ytr, Xte, Yte):

@@ -1,8 +1,9 @@
 """
 Some useful graphics functions
 """
+from numpy import ndarray
 
-
+import matplotlib.pyplot as plt
 import util
 import binary
 
@@ -81,11 +82,12 @@ def runOnlineClassifier(h, X, Y):
     for n in order:
         print (Y[n], X[n,:])
         h.nextExample(X[n,:], Y[n])
-        hold(True)
+        plt.hold(True)
         plot([X[n,0]], [X[n,1]], 'ys')
-        hold(False)
+        plt.hold(False)
         if not noStop:
-            v = raw_input()
+            # v = raw_input()
+            v = input()
             if v == "q":
                 noStop = True
         plotLinearClassifier(h, X, Y)
