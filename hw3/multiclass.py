@@ -46,21 +46,28 @@ class AVA:
 
     def train(self, X, Y):
         for i in range(self.K):
+            d_neg = [x for x in Y if x == i]
             for j in range(i):
                 print("training classifier for {0} versus {1}".format(i,j))
-                # TODO: make i,j mean "class i, not class j"
-                Xij = None # TODO
-                Yij = None # TODO
-                self.f[i][j].fit(Xij, Yij)  
+                d_pos = [x for x in Y if x == j]
+                d_bin = [[x, 1] for x in d_pos] + [[x, -1] for x in d_neg]
+                self.f[i][j].fit(X, d_bin)
 
     def predict(self, X, useZeroOne=False):
         vote = zeros((self.K,))
         for i in range(self.K):
             for j in range(i):
-                # TODO: figure out how much to vote; also be sure to cover the case when useZeroOne=True
-                p = None # TODO
-                vote[i] += p
-                vote[j] -= p
+                p = self.f[i][j].predict_proba(X.reshape(1, -1))
+                if useZeroOne:
+                    if p == 1:
+                        vote[i] += 1 if p[0,1] > 0.5 else 0
+                    else:
+                        vote[j] += 1 if p[0,1] > 0.5 else 0
+                else:
+                    if p == 1:
+                        vote[i] += p[0,1]
+                    else:
+                        vote[j] += 1
         return np.argmax(vote)
 
     def predictAll(self, X, useZeroOne=False):
