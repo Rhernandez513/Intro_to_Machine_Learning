@@ -157,7 +157,7 @@ class MCTree:
         self.f = []
         self.tree = tree
         for n in self.tree.iterNodes():
-            n.setNodeInfo(   mkClassifier()  )
+            n.setNodeInfo(mkClassifier())
 
     def train(self, X, Y):
         for n in self.tree.iterNodes():
@@ -169,16 +169,21 @@ class MCTree:
             rightLabels = list(n.getRight().iterAllLabels())
 
             print("training classifier for {0} versus {1}".format(leftLabels,rightLabels))
-
             # compute the training data, store in thisX, thisY
-            ### TODO: YOUR CODE HERE
-            util.raiseNotDefined()
+            thisX, thisY = util.splitTrainTest(X, leftLabels, 3)
 
             n.getNodeInfo().fit(thisX, thisY)
 
     def predict(self, X):
-        ### TODO: YOUR CODE HERE
-        util.raiseNotDefined()
+        return self.help_predict(X, self.tree)
+
+    def help_predict(self, X, n):
+        if n.isLeaf:
+            return n.getLabel()
+        probs = n.getNodeInfo.predict_proba(X.reshape(1, -1))
+        n = n.getLeft() if probs[0, 1] > 0.5 else n.getRight()
+        return self.help_predict(X, n)
+
 
     def predictAll(self, X):
         N,D = X.shape
@@ -186,7 +191,7 @@ class MCTree:
         for n in range(N):
             Y[n] = self.predict(X[n,:])
         return Y
-        
+
 def getMyTreeForWine():
     return makeBalancedTree(20)
 
