@@ -46,10 +46,12 @@ class AVA:
 
     def train(self, X, Y):
         for i in range(self.K):
-            d_neg = [x for x in Y if x == i]
+            if i == 0:
+                continue
+            d_pos = [x for x in Y if x == i]
             for j in range(i):
                 print("training classifier for {0} versus {1}".format(i,j))
-                d_pos = [x for x in Y if x == j]
+                d_neg = [x for x in Y if x == j]
                 d_bin = [[x, 1] for x in d_pos] + [[x, -1] for x in d_neg]
                 self.f[i][j].fit(X, d_bin)
 
@@ -160,7 +162,7 @@ class MCTree:
             n.setNodeInfo(mkClassifier())
 
     def train(self, X, Y):
-        for n in self.tree.iterNodes():
+        for idx, n in enumerate(self.tree.iterNodes()):
             if n.isLeaf:   # don't need to do any training on leaves!
                 continue
 
@@ -170,9 +172,9 @@ class MCTree:
 
             print("training classifier for {0} versus {1}".format(leftLabels,rightLabels))
             # compute the training data, store in thisX, thisY
-            thisX, thisY = util.splitTrainTest(X, leftLabels, 3)
+            thisY = [y for y in Y if y in leftLabels]
 
-            n.getNodeInfo().fit(thisX, thisY)
+            n.getNodeInfo().fit(X, thisY)
 
     def predict(self, X):
         return self.help_predict(X, self.tree)
