@@ -6,6 +6,7 @@ plug-and-play loss functions
 
 from numpy import *
 from pylab import *
+import numpy as np
 
 from binary import *
 from gd import *
@@ -40,7 +41,7 @@ class SquaredLoss(LossFunction):
         in Yhat; compute the loss associated with these predictions.
         """
 
-        return 0.5 * dot(Y - Yhat, Y - Yhat)
+        return 0.5 * np.dot(Y - Yhat, Y - Yhat)
 
 
     def lossGradient(self, X, Y, Yhat):
@@ -50,7 +51,7 @@ class SquaredLoss(LossFunction):
         gradient of the loss associated with these predictions.
         """
 
-        return - sum((Y - Yhat) * X.T, axis=1)
+        return - np.sum((Y - Yhat) * X.T, axis=1)
 
 
 class LogisticLoss(LossFunction):
@@ -64,8 +65,7 @@ class LogisticLoss(LossFunction):
         in Yhat; compute the loss associated with these predictions.
         """
 
-        ### TODO: YOUR CODE HERE
-        util.raiseNotDefined()
+        return np.sum(np.log(1 + np.exp(-Y * Yhat)))
 
 
     def lossGradient(self, X, Y, Yhat):
@@ -75,8 +75,7 @@ class LogisticLoss(LossFunction):
         gradient of the loss associated with these predictions.
         """
 
-        ### TODO: YOUR CODE HERE
-        util.raiseNotDefined()
+        return - np.sum((Y - Yhat) * X.T, axis=1)
 
 
 class HingeLoss(LossFunction):
@@ -90,8 +89,7 @@ class HingeLoss(LossFunction):
         in Yhat; compute the loss associated with these predictions.
         """
 
-        ### TODO: YOUR CODE HERE
-        util.raiseNotDefined()
+        return np.sum(np.max(0, 1 - (Y * Yhat)))
 
     def lossGradient(self, X, Y, Yhat):
         """
@@ -100,8 +98,7 @@ class HingeLoss(LossFunction):
         gradient of the loss associated with these predictions.
         """
 
-        ### TODO: YOUR CODE HERE
-        util.raiseNotDefined()
+        return - np.sum((Y - Yhat) * X.T, axis=1)
 
 
 class LinearClassifier(BinaryClassifier):
@@ -150,7 +147,7 @@ class LinearClassifier(BinaryClassifier):
         if type(self.weights) == int:
             return 0
         else:
-            return dot(self.weights, X)
+            return np.dot(self.weights, X)
 
     def getRepresentation(self):
         """
@@ -173,9 +170,9 @@ class LinearClassifier(BinaryClassifier):
         # define our objective function based on loss, lambd and (X,Y)
         def func(w):
             # should compute obj = loss(w) + (lambd/2) * norm(w)^2
-            Yhat = util.raiseNotDefined()    ### TODO: YOUR CODE HERE
+            Yhat = self.predict(X.T)
 
-            obj  = util.raiseNotDefined()    ### TODO: YOUR CODE HERE
+            obj  = lossFn.loss(Y, Yhat) + (lambd / 2) * np.linalg.norm(w)**2
 
             # return the objective
             return obj
@@ -183,10 +180,9 @@ class LinearClassifier(BinaryClassifier):
         # define our gradient function based on loss, lambd and (X,Y)
         def grad(w):
             # should compute gr = grad(w) + lambd * w
-            Yhat = util.raiseNotDefined()    ### TODO: YOUR CODE HERE
+            Yhat = self.predict(w)
 
-            gr   = util.raiseNotDefined()    ### TODO: YOUR CODE HERE
-
+            gr   = lossFn.lossGradient(X, Y, Yhat) + lambd * w
             return gr
 
         # run gradient descent; our initial point will just be our
