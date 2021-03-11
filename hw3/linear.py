@@ -166,6 +166,7 @@ class LinearClassifier(BinaryClassifier):
         lambd    = self.opts['lambda']               # regularizer is (lambd / 2) * ||w||^2
         numIter  = self.opts['numIter']              # how many iterations of gd to run
         stepSize = self.opts['stepSize']             # what should be our GD step size?
+        self.weights = np.zeros(X.shape[1])
 
         # define our objective function based on loss, lambd and (X,Y)
         def func(w):
