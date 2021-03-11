@@ -69,12 +69,12 @@ class AVA:
             for j in range(i):
                 p = self.f[i][j].predict_proba(X.reshape(1, -1))
                 if useZeroOne:
-                    if p == 1:
+                    if p[0,1] == 1:
                         vote[i] += 1 if p[0,1] > 0.5 else 0
                     else:
                         vote[j] += 1 if p[0,1] > 0.5 else 0
                 else:
-                    if p == 1:
+                    if p[0,1] == 1:
                         vote[i] += p[0,1]
                     else:
                         vote[j] += 1
