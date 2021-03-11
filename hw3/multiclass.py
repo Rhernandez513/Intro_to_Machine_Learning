@@ -48,12 +48,20 @@ class AVA:
         for i in range(self.K):
             if i == 0:
                 continue
-            d_pos = [x for x in Y if x == i]
             for j in range(i):
                 print("training classifier for {0} versus {1}".format(i,j))
-                d_neg = [x for x in Y if x == j]
-                d_bin = [[x, 1] for x in d_pos] + [[x, -1] for x in d_neg]
-                self.f[i][j].fit(X, d_bin)
+                Yij = []
+                Xij = []
+
+                for idx, y in enumerate(Y):
+                    if y == j:
+                        Yij.append(1)
+                        Xij.append(X[idx])
+                    elif y == i:
+                        Yij.append(0)
+                        Xij.append(X[idx])
+
+                self.f[i][j].fit(np.array(Xij), np.array(Yij))
 
     def predict(self, X, useZeroOne=False):
         vote = zeros((self.K,))
@@ -172,9 +180,36 @@ class MCTree:
 
             print("training classifier for {0} versus {1}".format(leftLabels,rightLabels))
             # compute the training data, store in thisX, thisY
-            thisY = [y for y in Y if y in leftLabels]
+            leftY = [y for y in Y if y in leftLabels]
+            rightY = [y for y in Y if y in rightLabels]
 
-            n.getNodeInfo().fit(X, thisY)
+            thisY = np.array(leftY + rightY)
+
+            thisX = []
+            for idx, x in enumerate(X):
+                thisX.append([])
+                for dataPoint in x:
+                    if dataPoint in leftLabels:
+                        thisX[idx].append(1)
+                    elif dataPoint in rightLabels:
+                        thisX[idx].append(0)
+                    else:
+                        thisX[idx].append(dataPoint)
+
+            n.getNodeInfo().fit(np.array(thisX), thisY)
+
+    def help_train(self, X, Y, n):
+        for idx, n in enumerate(self.tree.iterNodes()):
+            if n.isLeaf:   # don't need to do any training on leaves!
+               return
+        # otherwise we're an internal node
+        leftLabels  = list(n.getLeft().iterAllLabels())
+        rightLabels = list(n.getRight().iterAllLabels())
+
+        leftY = [y for y in Y if y in leftLabels]
+        rightY = [y for y in Y if y in rightLabels]
+        n.getNodeInfo().fit(X, Y)
+        pass
 
     def predict(self, X):
         return self.help_predict(X, self.tree)
