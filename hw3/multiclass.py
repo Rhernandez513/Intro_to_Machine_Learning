@@ -170,7 +170,7 @@ class MCTree:
             n.setNodeInfo(mkClassifier())
 
     def train(self, X, Y):
-        for idx, n in enumerate(self.tree.iterNodes()):
+        for n in self.tree.iterNodes():
             if n.isLeaf:   # don't need to do any training on leaves!
                 continue
 
@@ -183,44 +183,30 @@ class MCTree:
             leftY = [y for y in Y if y in leftLabels]
             rightY = [y for y in Y if y in rightLabels]
 
-            thisY = np.array(leftY + rightY)
-
+            thisY = leftY + rightY
             thisX = []
-            for idx, x in enumerate(X):
-                thisX.append([])
-                for dataPoint in x:
-                    if dataPoint in leftLabels:
-                        thisX[idx].append(1)
-                    elif dataPoint in rightLabels:
-                        thisX[idx].append(0)
-                    else:
-                        thisX[idx].append(dataPoint)
 
-            n.getNodeInfo().fit(np.array(thisX), thisY)
+            for idx, y in enumerate(thisY):
+                if y in thisY:
+                    thisX.append(X[idx])
+                    if y in leftY:
+                        thisY[idx] = 0
+                    elif y in rightY:
+                        thisY[idx] = 1
 
-    def help_train(self, X, Y, n):
-        for idx, n in enumerate(self.tree.iterNodes()):
-            if n.isLeaf:   # don't need to do any training on leaves!
-               return
-        # otherwise we're an internal node
-        leftLabels  = list(n.getLeft().iterAllLabels())
-        rightLabels = list(n.getRight().iterAllLabels())
-
-        leftY = [y for y in Y if y in leftLabels]
-        rightY = [y for y in Y if y in rightLabels]
-        n.getNodeInfo().fit(X, Y)
-        pass
+            n.getNodeInfo().fit(np.array(thisX), np.array(thisY))
 
     def predict(self, X):
         return self.help_predict(X, self.tree)
 
+
     def help_predict(self, X, n):
         if n.isLeaf:
             return n.getLabel()
-        probs = n.getNodeInfo.predict_proba(X.reshape(1, -1))
+
+        probs = n.getNodeInfo().predict_proba(X.reshape(1, -1))
         n = n.getLeft() if probs[0, 1] > 0.5 else n.getRight()
         return self.help_predict(X, n)
-
 
     def predictAll(self, X):
         N,D = X.shape
@@ -228,6 +214,7 @@ class MCTree:
         for n in range(N):
             Y[n] = self.predict(X[n,:])
         return Y
+
 
 def getMyTreeForWine():
     return makeBalancedTree(20)
