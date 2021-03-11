@@ -14,10 +14,10 @@ def plotLinearClassifier(h, X, Y):
     """
     Draw the current decision boundary, margin and data
     """
-    figure(1)
-    plot(X[Y>=0.5,0], X[Y>=0.5,1], 'b+',
+    plt.figure(1)
+    plt.plot(X[Y>=0.5,0], X[Y>=0.5,1], 'b+',
          X[Y< 0.5,0], X[Y< 0.5,1], 'ro')
-    axes = figure(1).get_axes()[0]
+    axes = plt.figure(1).get_axes()[0]
     xlim = axes.get_xlim()
     ylim = axes.get_ylim()
 
@@ -59,11 +59,11 @@ def plotLinearClassifier(h, X, Y):
 
         # print(axes)
         if len(inBounds) >= 2:
-            plot(X[Y>=0.5,0], X[Y>=0.5,1], 'b+',
+            plt.plot(X[Y>=0.5,0], X[Y>=0.5,1], 'b+',
                  X[Y< 0.5,0], X[Y< 0.5,1], 'ro',
                  [inBounds[0][0], inBounds[1][0]], [inBounds[0][1], inBounds[1][1]], 'k-')
             #figure(1).set_axes(axes)
-            legend(('positive', 'negative', 'hyperplane'))
+            plt.legend(('positive', 'negative', 'hyperplane'))
         else:
             plot(X[Y>=0.5,0], X[Y>=0.5,1], 'b+',
                  X[Y< 0.5,0], X[Y< 0.5,1], 'ro')
@@ -76,14 +76,14 @@ def runOnlineClassifier(h, X, Y):
     N,D = X.shape
     order = range(N)
     util.permute(order)
-    plot(X[Y< 0.5,0], X[Y< 0.5,1], 'b+',
+    plt.plot(X[Y< 0.5,0], X[Y< 0.5,1], 'b+',
          X[Y>=0.5,0], X[Y>=0.5,1], 'ro')
     noStop = False
     for n in order:
         print (Y[n], X[n,:])
         h.nextExample(X[n,:], Y[n])
         plt.hold(True)
-        plot([X[n,0]], [X[n,1]], 'ys')
+        plt.plot([X[n,0]], [X[n,1]], 'ys')
         plt.hold(False)
         if not noStop:
             # v = raw_input()
