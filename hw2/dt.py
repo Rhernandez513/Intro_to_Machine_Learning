@@ -6,7 +6,6 @@ it's easier to code than the information-based metrics).
 """
 
 import util
-from sklearn.tree import DecisionTreeClassifier
 from numpy import *
 from binary import *
 import datasets
