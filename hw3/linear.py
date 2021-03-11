@@ -170,7 +170,7 @@ class LinearClassifier(BinaryClassifier):
         # define our objective function based on loss, lambd and (X,Y)
         def func(w):
             # should compute obj = loss(w) + (lambd/2) * norm(w)^2
-            Yhat = self.predict(X.T)
+            Yhat = self.predict(w)
 
             obj  = lossFn.loss(Y, Yhat) + (lambd / 2) * np.linalg.norm(w)**2
 
