@@ -89,7 +89,12 @@ class HingeLoss(LossFunction):
         in Yhat; compute the loss associated with these predictions.
         """
 
-        return np.sum(np.max(0, 1 - (Y * Yhat)))
+        # AKA this but numpy doesn't like me
+        # return np.sum(np.max([0, np.array(1 - (Y * Yhat))]))
+        A = [y * Yhat for y in Y]
+        B = [1 - a for a in A]
+        C = [max(b) if max(b)>0 else 0 for b in B]
+        return np.sum(C)
 
     def lossGradient(self, X, Y, Yhat):
         """
@@ -171,7 +176,7 @@ class LinearClassifier(BinaryClassifier):
         # define our objective function based on loss, lambd and (X,Y)
         def func(w):
             # should compute obj = loss(w) + (lambd/2) * norm(w)^2
-            Yhat = self.predict(w)
+            Yhat = self.predict(X.T)
 
             obj  = lossFn.loss(Y, Yhat) + (lambd / 2) * np.linalg.norm(w)**2
 
@@ -181,7 +186,7 @@ class LinearClassifier(BinaryClassifier):
         # define our gradient function based on loss, lambd and (X,Y)
         def grad(w):
             # should compute gr = grad(w) + lambd * w
-            Yhat = self.predict(w)
+            Yhat = self.predict(X.T)
 
             gr   = lossFn.lossGradient(X, Y, Yhat) + lambd * w
             return gr

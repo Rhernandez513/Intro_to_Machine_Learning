@@ -37,12 +37,18 @@ def plotLinearClassifier(h, X, Y):
 
         # find the zeros along each axis
         # w0*l + w1*? + b = 0  ==>  ? = -(b + w0*l) / w1
-        xmin_zero = - (b + w[0] * xmin) / w[1]
-        xmax_zero = - (b + w[0] * xmax) / w[1]
-        ymin_zero = - (b + w[1] * ymin) / w[0]
-        ymax_zero = - (b + w[1] * ymax) / w[0]
-
-        #print (ylim, xlim, (xmin_zero, xmax_zero), (ymin_zero, ymax_zero))
+        if w[1] != 0:
+            xmin_zero = - (b + w[0] * xmin) / w[1]
+            xmax_zero = - (b + w[0] * xmax) / w[1]
+        else:
+            xmin_zero = 0
+            xmax_zero = xmax
+        if w[0] != 0:
+            ymin_zero = - (b + w[1] * ymin) / w[0]
+            ymax_zero = - (b + w[1] * ymax) / w[0]
+        else:
+            ymin_zero = 0
+            ymax_zero = ymax
 
         # now, two of these should actually be in bounds, figure out which
         inBounds = []
