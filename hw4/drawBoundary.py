@@ -1,3 +1,4 @@
+from matplotlib.pyplot import plot, figure, show, contour, contourf
 from numpy import *
 from pylab import *
 

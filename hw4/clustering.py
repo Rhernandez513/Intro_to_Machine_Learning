@@ -1,5 +1,8 @@
+from matplotlib.pyplot import show
 from numpy import *
 import numpy as np
+from numpy.random import rand
+
 from util import *
 from pylab import *
 
