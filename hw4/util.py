@@ -1,7 +1,13 @@
 import sys
 import inspect
 import random
+
+import matplotlib
+from matplotlib import cm
+from matplotlib.pyplot import plot, figure, subplot, imshow, text, axis
 from numpy import *
+from numpy.linalg import inv, det, svd
+from numpy.random import rand
 from pylab import *
 
 def raiseNotDefined():
