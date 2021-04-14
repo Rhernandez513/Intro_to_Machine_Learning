@@ -1,4 +1,6 @@
 from numpy import *
+from numpy.random import randn
+
 from util import *
 
 X2d = array([[ 1.8290571 , -1.73590059,  1.24248465, 2.88263353, -2.01186748,

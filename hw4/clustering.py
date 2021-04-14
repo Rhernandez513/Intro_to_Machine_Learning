@@ -104,24 +104,43 @@ def initialize_clusters(X, K, method):
         permute(dataPoints)
         mu = X[dataPoints[0:K], :].copy()   # ditto above
 
-    # ----------------------------------------------------------------
-    # TODO: Implement ffh
-    # ----------------------------------------------------------------
     elif method == 'ffh':
         # pick the first center randomly and each subsequent
         # subsequent center according to the furthest first
         # heuristic
 
         # pick the first center totally randomly
-        mu[0,:] = X[int(rand() * N), :].copy()    # be sure to copy!
+        init_i = int(rand() * N)
+        mu[0,:] = X[init_i, :].copy()    # be sure to copy!
+
+        observed=[]
+        observed.append(init_i)
+        while len(observed) < K:
+            dist = np.mean([X[i] for i in observed], 0)
+            desc_dists = np.argsort(dist)[::-1]
+            for idx in desc_dists:
+                if idx not in observed:
+                    observed.append(idx)
+                    break
+        for k in range(1, K):
+            mu[k,:] = X[observed[k-1],:].copy()
 
         # pick each subsequent center by ffh
-        for k in range(1, K):
+        # for k in range(1, K):
+            # maxdist = -1
+            # furthest_idx = -1
             # find m such that data point n is the best next mean, set
             # this to mu[k,:]
-            
-            ### TODO: YOUR CODE HERE
-            raiseNotDefined()
+            # prev = mu[k-1,:]
+            # for n in range(1, N):
+            #     cur = X[n, :].copy()  # be sure to copy!
+            #     dist = linalg.norm(prev - cur)
+            #     if dist > maxdist:
+            #         maxdist = dist
+            #         furthest_idx = n
+            # print(maxdist)
+            # print(furthest_idx)
+            # mu[k,:] = X[furthest_idx, :].copy() # be sure to copy!
 
     # ----------------------------------------------------------------
     # TODO: implement km++
@@ -130,7 +149,7 @@ def initialize_clusters(X, K, method):
         # pick the first center randomly and each subsequent
         # subsequent center according to the kmeans++ method
         # HINT: see numpy.random.multinomial
-        
+
         ### TODO: YOUR CODE HERE
         raiseNotDefined()
 

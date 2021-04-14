@@ -128,8 +128,8 @@ def drawDigits(X,Y):
   N,D = X.shape
   order = arange(N)
   permute(order)
-
   figure()
+
   for i in range(64):
     if i >= len(order):
       break
